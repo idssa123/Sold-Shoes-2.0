@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: #000000;
+    color: #ffffff;
+}
+
+.button-primary {
+    @apply bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700;
+}
+
+.button-ghost {
+    @apply border border-red-600 text-red-500 px-4 py-2 rounded hover:bg-red-600 hover:text-white;
+}
+
+.input {
+    @apply w-full border border-red-600 bg-black px-3 py-2 text-white rounded focus:border-red-500 focus:outline-none;
+}
+
+.card {
+    @apply border border-red-600 bg-black p-4 rounded;
+}
+
+.badge {
+    @apply px-2 py-1 text-xs rounded bg-red-600 text-white;
+}
