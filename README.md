@@ -1,198 +1,202 @@
-# Sold Shoes - Tienda de Calzado de Segunda Mano
+# 👟 SoldShoes — Tienda de ropa y calzado de segunda mano
 
-Aplicacion web de venta de calzado de segunda mano desarrollada con React, Firebase y Tailwind CSS.
+App React + Firebase para comprar y vender moda de segunda mano.
 
-## Caracteristicas
+---
 
-- **Catalogo de productos**: 20 productos de ropa de marca de segunda mano
-- **Busqueda**: Busca productos por nombre o descripcion
-- **Carrusel destacados**: Visualizacion interactiva de productos destacados
-- **Autenticacion**: Sistema de login y registro con Firebase Authentication
-- **Carrito de compra**: Anade productos, modifica cantidades y gestiona tu carrito
-- **Responsive**: Diseno adaptado para movil, tablet y escritorio
-- **Detalles de producto**: Pagina individual con toda la informacion
+## 📋 Requisitos previos
 
-## Requisitos previos
+- Node.js ≥ 18
+- Proyecto Firebase con **Authentication**, **Firestore** y **Storage** habilitados
 
-- Node.js (v14 o superior)
-- npm o yarn
-- Cuenta de Firebase (gratuita)
+---
 
-## Instalacion
-
-### 1. Clonar el repositorio
+## ⚙️ Instalación
 
 ```bash
-git clone <url-del-repositorio>
-cd tienda-futurista
-```
-
-### 2. Instalar dependencias
-
-```bash
+git clone <repo>
+cd soldshoes
 npm install
-```
-
-### 3. Configurar Firebase
-
-1. Ve a [Firebase Console](https://console.firebase.google.com)
-2. Crea un nuevo proyecto
-3. Habilita **Authentication** → Email/Password
-4. Habilita **Firestore Database** 
-5. En Firestore → Rules, pega temporalmente (modo desarrollo):
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
-    }
-  }
-}
-```
-
-6. Ve a Project Settings → General → Your apps
-7. Registra una aplicación web y copia la configuración
-
-### 4. Configurar variables de entorno
-
-Crea un archivo `.env` en la raíz del proyecto con tu configuración de Firebase:
-
-```env
-VITE_FIREBASE_API_KEY=tu_api_key
-VITE_FIREBASE_AUTH_DOMAIN=tu_proyecto.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=tu_proyecto_id
-VITE_FIREBASE_STORAGE_BUCKET=tu_proyecto.firebasestorage.app
-VITE_FIREBASE_MESSAGING_SENDER_ID=tu_sender_id
-VITE_FIREBASE_APP_ID=tu_app_id
-VITE_FIREBASE_MEASUREMENT_ID=tu_measurement_id
-```
-
-### 5. Iniciar el servidor de desarrollo
-
-```bash
+cp .env.example .env
+# → rellena el .env con tus claves Firebase
 npm run dev
 ```
 
-La aplicación estará disponible en `http://localhost:5173`
+---
 
-### 6. Cargar productos de ejemplo
-
-1. Abre la aplicación en el navegador
-2. En la página de inicio, pulsa el botón **"Cargar productos de ejemplo"**
-3. Confirma la acción para cargar los 20 productos en Firestore
-
-## Estructura del proyecto
+## 🔑 Variables de entorno (`.env`)
 
 ```
-tienda-futurista/
-├── src/
-│   ├── components/        # Componentes reutilizables
-│   │   ├── Carousel.jsx   # Carrusel de productos destacados
-│   │   ├── Navbar.jsx     # Barra de navegación
-│   │   ├── ProductCard.jsx # Tarjeta de producto
-│   │   └── ProtectedRoute.jsx # Rutas protegidas
-│   ├── context/           # Context API para estado global
-│   │   ├── AuthContext.jsx    # Autenticación
-│   │   └── CartContext.jsx    # Carrito de compra
-│   ├── lib/               # Utilidades y configuración
-│   │   ├── firebase.js    # Configuración de Firebase
-│   │   └── seedProducts.js # Script de carga de productos
-│   ├── pages/             # Páginas de la aplicación
-│   │   ├── Home.jsx       # Página principal
-│   │   ├── Products.jsx   # Lista de productos
-│   │   ├── ProductDetail.jsx # Detalle de producto
-│   │   ├── Cart.jsx       # Carrito de compra
-│   │   ├── Login.jsx      # Inicio de sesión
-│   │   └── Register.jsx   # Registro de usuario
-│   ├── data/              # Datos estáticos
-│   │   └── products.js    # 20 productos de ejemplo
-│   ├── App.jsx            # Componente principal
-│   ├── main.jsx           # Punto de entrada
-│   └── index.css          # Estilos globales
-├── .env                   # Variables de entorno (crear)
-├── .env.example           # Ejemplo de variables
-├── package.json           # Dependencias
-├── tailwind.config.js     # Configuración de Tailwind
-└── vite.config.js         # Configuración de Vite
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=...
+VITE_FIREBASE_PROJECT_ID=...
+VITE_FIREBASE_STORAGE_BUCKET=...
+VITE_FIREBASE_MESSAGING_SENDER_ID=...
+VITE_FIREBASE_APP_ID=...
 ```
 
-## Tecnologias utilizadas
+---
 
-### Frontend
-- **React 18** - Framework de JavaScript
-- **React Router** - Enrutamiento
-- **Tailwind CSS** - Framework de estilos
-- **Vite** - Build tool y dev server
+## 🗄️ Estructura de la base de datos (Firestore)
 
-### Backend
-- **Firebase Authentication** - Autenticación de usuarios
-- **Cloud Firestore** - Base de datos NoSQL
-- **Firebase Storage** - Almacenamiento (preparado)
+### Colección `users`
+```
+users/{uid}
+  name:      string
+  surname:   string
+  email:     string
+  role:      "user" | "admin"
+  provider:  "email" | "google"
+  photo:     string (URL, opcional)
+  createdAt: Timestamp
+  updatedAt: Timestamp
+```
 
-## Funcionalidades principales
+Sub-colecciones por usuario:
+- `users/{uid}/favorites/{productId}` — productos favoritos
+- `users/{uid}/wishlist/{productId}` — lista de deseos (productos sin stock)
 
-### Autenticación
-- Registro de usuarios con validación de edad (>18)
-- Login con email y contraseña
-- Persistencia de sesión
-- Logout
+---
 
-### Productos
-- Listado de 20 productos de ropa de segunda mano
-- Búsqueda en tiempo real
-- Filtrado por nombre y descripción
-- Carrusel de productos destacados
-- Página de detalle de cada producto
+### Colección `products`
+```
+products/{productId}
+  name:        string
+  brand:        string
+  price:        number
+  stock:        number     ← IMPORTANTE: 0 = sin stock, bloquea la compra
+  size:         string
+  category:     string
+  condition:    string     ("Como nueva" | "Excelente" | "Muy bueno" | ...)
+  color:        string
+  description:  string
+  image:        string (URL)
+  featured:     boolean   ← aparece en el carrusel de la Home
+  createdAt:    Timestamp
+  updatedAt:    Timestamp
+```
 
-### Carrito
-- Añadir productos al carrito
-- Modificar cantidades
-- Eliminar productos
-- Cálculo automático del total
-- Persistencia en localStorage
-- Solo accesible para usuarios autenticados
+---
 
-## Seguridad (Produccion)
+### Colección `orders`
+```
+orders/{orderId}
+  userId:        string (UID del usuario)
+  userEmail:     string
+  items: [
+    { id, name, price, quantity, subtotal }
+  ]
+  total:          number
+  address: {
+    name, surname, street, city, zip, phone
+  }
+  paymentMethod:  "card" | "paypal" | "bizum"
+  paymentStatus:  "aceptado" | "rechazado" | "pendiente"
+  status:         "pendiente" | "enviado" | "entregado" | "cancelado"
+  createdAt:      Timestamp
+```
 
-Para producción, actualiza las reglas de Firestore:
+---
+
+## 🌱 Script seed (cargar productos de prueba)
+
+Abre la consola del navegador en la app en desarrollo:
+
+```js
+// Cargar productos
+import { seedProducts } from "/src/lib/seedProducts.js";
+await seedProducts();
+
+// Convertir un usuario en administrador (obtén el UID desde Firebase Auth)
+import { seedAdminUser } from "/src/lib/seedProducts.js";
+await seedAdminUser("UID_DEL_USUARIO");
+```
+
+> **Alternativa**: en Firebase Console → Firestore, edita el documento `users/{uid}` y cambia `role` a `"admin"`.
+
+---
+
+## 🔐 Reglas de Firestore recomendadas
 
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /products/{productId} {
+
+    // Productos: lectura pública, escritura solo admin
+    match /products/{id} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
     }
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+    // Pedidos: crear si autenticado, leer solo el propio usuario o admin
+    match /orders/{id} {
+      allow create: if request.auth != null;
+      allow read:   if request.auth != null
+        && (resource.data.userId == request.auth.uid
+            || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin");
+      allow update: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
+    // Usuarios: leer/escribir solo el propio documento
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
+    // Sub-colecciones de usuario (favoritos, wishlist)
+    match /users/{uid}/{sub}/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
     }
   }
 }
 ```
 
-## Build para produccion
+---
+
+## 🛠️ Panel de Administración
+
+Accede en `/admin` (solo usuarios con `role: "admin"`).
+
+**Funcionalidades:**
+- **Dashboard**: resumen de ingresos, stock bajo, últimos pedidos
+- **Productos** (CRUD completo):
+  - Crear, editar, eliminar productos
+  - Campo `stock` con alerta visual si ≤ 2 unidades
+  - Marcar como destacado (aparece en portada)
+- **Pedidos**: ver todos los pedidos, cambiar estado (pendiente → enviado → entregado)
+- **Usuarios**: ver registros, promover/degradar a administrador
+
+---
+
+## ✨ Funcionalidades principales
+
+| Feature | Estado |
+|---------|--------|
+| Registro / Login email + Google | ✅ |
+| Email de verificación al registrarse | ✅ |
+| Guardar usuarios en Firestore | ✅ |
+| Catálogo con filtros y paginación | ✅ |
+| Detalle de producto | ✅ |
+| Carrito (localStorage) | ✅ |
+| Checkout multi-paso con pago simulado | ✅ |
+| Guardar pedidos en Firestore | ✅ |
+| **Decrementar stock al comprar** | ✅ |
+| Historial de pedidos del usuario | ✅ |
+| Favoritos persistentes en Firestore | ✅ |
+| Lista de deseos (productos sin stock) | ✅ |
+| **Panel admin con CRUD productos** | ✅ |
+| **Gestión de pedidos desde admin** | ✅ |
+| **Gestión de usuarios / roles** | ✅ |
+
+---
+
+## 🚀 Build para producción
 
 ```bash
 npm run build
+# carpeta dist/ lista para desplegar en Vercel, Netlify, Firebase Hosting...
 ```
-
-Los archivos de producción se generarán en la carpeta `dist/`
-
-## Notas
-
-- Los productos de ejemplo usan imágenes de placeholder (picsum.photos)
-- El carrito se guarda en localStorage del navegador
-- La aplicación incluye validación de formularios
-- Diseño responsive mobile-first
-- Accesibilidad con etiquetas ARIA
-
-## Autor
-
-Proyecto de fin de ciclo - 2º DAW
-
-## Licencia
-
-Este proyecto es de código abierto para fines educativos.
