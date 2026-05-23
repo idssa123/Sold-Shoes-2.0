@@ -23,7 +23,18 @@ if (missingKeys.length > 0) {
   );
 }
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
-export const storage = getStorage(app);
+export const firebaseReady = missingKeys.length === 0;
+
+let app = null;
+let db = null;
+let auth = null;
+let storage = null;
+
+if (firebaseReady) {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  auth = getAuth(app);
+  storage = getStorage(app);
+}
+
+export { db, auth, storage };
