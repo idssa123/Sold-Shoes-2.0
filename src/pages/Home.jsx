@@ -1,116 +1,172 @@
-
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { Link } from "react-router-dom";
-import Carousel from "../components/Carousel";
+import { Link, useNavigate } from "react-router-dom";
 import { db } from "../lib/firebase";
 import { seedProducts } from "../lib/seedProducts";
+import ProductCard from "../components/ProductCard";
+
+const PAGE = 4;
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [seeding, setSeeding] = useState(false);
-
-  const featuredProducts = products.filter((product) => product.featured).slice(0, 6);
+  const [loading,  setLoading]  = useState(true);
+  const [seeding,  setSeeding]  = useState(false);
+  const [dot,      setDot]      = useState(0);
+  const navigate = useNavigate();
 
   const fetchProducts = async () => {
     setLoading(true);
-    setError("");
     try {
-      const productsQuery = query(
-        collection(db, "products"),
-        orderBy("createdAt", "desc")
-      );
-      const snapshot = await getDocs(productsQuery);
-      const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setProducts(items);
-    } catch (err) {
-      setError("No se pudieron cargar los productos. Revisa Firebase.");
-    } finally {
-      setLoading(false);
-    }
+      const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      setProducts(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+    } catch {}
+    finally { setLoading(false); }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  useEffect(() => { fetchProducts(); }, []);
 
   const handleSeed = async () => {
-    const confirmed = window.confirm(
-      "Se cargaran productos de ejemplo en Firestore. Quieres continuar?"
-    );
-    if (!confirmed) return;
+    if (!window.confirm("¿Cargar productos de ejemplo?")) return;
     setSeeding(true);
-    setError("");
-    try {
-      await seedProducts();
-      await fetchProducts();
-    } catch (err) {
-      setError("No se pudo crear el seed. Revisa permisos en Firestore.");
-    } finally {
-      setSeeding(false);
-    }
+    try { await seedProducts(); await fetchProducts(); }
+    catch { alert("Error. Revisa los permisos de Firestore."); }
+    finally { setSeeding(false); }
   };
 
+  const totalDots = Math.max(1, Math.ceil(products.length / PAGE));
+  const visible   = products.slice(dot * PAGE, dot * PAGE + PAGE);
+
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
-      <div className="mb-8 text-center">
-        <img src="/logo.png" alt="Sold Shoes" className="mx-auto mb-4 h-24 w-auto" />
-        <h1 className="text-4xl font-bold text-red-600">
-          Sold Shoes
-        </h1>
-        <p className="mt-3 text-lg text-white">
-          Ropa de segunda mano · Calidad garantizada
-        </p>
-        <div className="mt-6">
-          <button
-            type="button"
-            className="button-primary"
-            onClick={handleSeed}
-            disabled={seeding}
-          >
-            {seeding ? "Cargando..." : "Cargar productos de ejemplo"}
-          </button>
-        </div>
-      </div>
+    <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
 
-      {error && (
-        <div className="mb-6 rounded-xl border border-ember/50 bg-ember/10 p-4 text-sm text-ember">
-          {error}
+      {/* ── BANNER PRINCIPAL ───────────────────────────────────── */}
+      <section style={{ background: "var(--bg2)", border: "1px solid var(--bdr)", margin: "16px", borderRadius: 6, overflow: "hidden", position: "relative", minHeight: 260 }}>
+        {/* Imagen de fondo placeholder */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)" }} />
+        <div style={{ position: "absolute", top: 12, right: 12 }}>
+          <span className="text-xs px-2 py-1 rounded" style={{ border: "1px solid var(--bdr2)", color: "var(--tx3)", background: "rgba(0,0,0,0.5)" }}>
+            Imagen de fondo
+          </span>
         </div>
-      )}
 
-      {loading ? (
-        <p className="text-center text-white">Cargando productos...</p>
-      ) : products.length === 0 ? (
-        <div className="rounded-xl border border-red-600 bg-black p-8 text-center text-white">
-          No hay productos. Usa el boton de arriba para crear el seed.
-        </div>
-      ) : (
-        <>
-          {featuredProducts.length > 0 ? (
-            <>
-              <section className="mb-8">
-                <Carousel items={featuredProducts} />
-              </section>
-
-              <section className="text-center">
-                <p className="mb-6 text-lg text-white">
-                  Descubre toda nuestra colección de ropa de segunda mano
-                </p>
-                <Link to="/products" className="button-primary">
-                  Ver todos los productos
-                </Link>
-              </section>
-            </>
-          ) : (
-            <div className="text-center text-white">
-              No hay productos destacados disponibles
+        {/* Contenido banner */}
+        <div className="relative flex items-center h-full" style={{ padding: "48px 32px", minHeight: 260 }}>
+          <div className="flex items-center gap-4 flex-wrap">
+            {/* Título en caja negra — igual al wireframe */}
+            <div className="px-5 py-3 rounded" style={{ background: "#000", border: "1px solid var(--bdr2)" }}>
+              <h1 className="display text-3xl sm:text-4xl" style={{ color: "var(--tx)" }}>BANNER PRINCIPAL</h1>
             </div>
-          )}
-        </>
-      )}
+
+            <div className="px-4 py-2 rounded" style={{ border: "1px solid var(--bdr2)", background: "transparent" }}>
+              <span className="text-sm" style={{ color: "var(--tx2)" }}>Texto descriptivo de la marca</span>
+            </div>
+
+            <div className="px-4 py-2 rounded" style={{ border: "1px solid var(--bdr2)", background: "transparent" }}>
+              <span className="text-sm" style={{ color: "var(--tx2)" }}>Eslogan o llamada a la acción</span>
+            </div>
+
+            <Link to="/products"
+              className="px-6 py-2.5 rounded font-bold text-sm display"
+              style={{ background: "#000", color: "#fff", border: "1px solid var(--bdr2)", letterSpacing: "0.05em" }}>
+              COMPRAR AHORA
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
+
+        {/* ── PRODUCTOS DESTACADOS ───────────────────────────────── */}
+        <div className="flex items-center justify-between mb-4">
+          {/* Título en caja negra */}
+          <div className="px-4 py-2 rounded" style={{ background: "#000", border: "1px solid var(--bdr2)" }}>
+            <h2 className="display text-lg" style={{ color: "var(--tx)" }}>PRODUCTOS DESTACADOS</h2>
+          </div>
+          <Link to="/products" className="btn btn-o text-xs px-4 py-2">Ver todos →</Link>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="card sk" style={{ borderRadius: 4 }}>
+                <div style={{ paddingBottom: "80%", background: "var(--bg3)" }} />
+                <div className="p-3 space-y-2">
+                  <div className="h-6 rounded" style={{ background: "var(--bg4)" }} />
+                  <div className="h-5 rounded" style={{ background: "var(--bg3)" }} />
+                  <div className="h-7 rounded" style={{ background: "var(--bg4)", width: "60%" }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length === 0 ? (
+          <div className="card p-12 text-center" style={{ borderRadius: 6 }}>
+            <div className="text-5xl mb-4">👗</div>
+            <p className="font-semibold mb-2" style={{ color: "var(--tx)" }}>No hay productos todavía</p>
+            <p className="text-sm mb-5" style={{ color: "var(--tx2)" }}>Carga los productos de ejemplo para empezar</p>
+            <button onClick={handleSeed} disabled={seeding} className="btn btn-p mx-auto">
+              {seeding ? "Cargando..." : "Cargar productos demo"}
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {visible.map(p => <ProductCard key={p.id} product={p} />)}
+            </div>
+
+            {/* Paginación de puntos — igual al wireframe */}
+            {totalDots > 1 && (
+              <div className="flex justify-center gap-2 mt-5">
+                {[...Array(totalDots)].map((_, i) => (
+                  <button key={i} onClick={() => setDot(i)}
+                    className="rounded-full transition-all"
+                    style={{ width: dot === i ? 22 : 9, height: 9, background: dot === i ? "var(--tx)" : "var(--bg4)", border: "1px solid var(--bdr2)" }} />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* ── FOOTER 3 COLUMNAS — exacto al wireframe ───────────── */}
+        <footer className="mt-12 rounded-lg overflow-hidden" style={{ border: "1px solid var(--bdr2)", background: "var(--bg2)" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3">
+            {[
+              {
+                title: "SOBRE NOSOTROS",
+                links: ["Quiénes somos", "Nuestra historia", "Trabaja con nosotros"],
+              },
+              {
+                title: "AYUDA",
+                links: ["Envíos y devoluciones", "Preguntas frecuentes", "Contacto"],
+              },
+              {
+                title: "REDES SOCIALES",
+                links: ["Instagram", "Facebook", "Twitter"],
+              },
+            ].map((col, ci) => (
+              <div key={col.title} style={{ borderRight: ci < 2 ? "1px solid var(--bdr)" : "none" }}>
+                {/* Header columna — negro sólido como wireframe */}
+                <div className="px-4 py-3" style={{ background: "#000" }}>
+                  <h4 className="display text-sm" style={{ color: "var(--tx)" }}>{col.title}</h4>
+                </div>
+                {/* Links con borde */}
+                <div className="p-3 space-y-2">
+                  {col.links.map(link => (
+                    <div key={link} className="px-3 py-1.5 rounded"
+                      style={{ border: "1px solid var(--bdr)", background: "transparent", cursor: "pointer" }}>
+                      <span className="text-xs" style={{ color: "var(--tx2)" }}>{link}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </footer>
+
+        <p className="text-center text-xs mt-4 pb-4" style={{ color: "var(--tx3)" }}>
+          © 2025 Sold Shoes 2.0 · Proyecto Fin de Ciclo DAW
+        </p>
+      </div>
     </div>
   );
 }
