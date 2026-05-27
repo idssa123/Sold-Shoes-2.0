@@ -65,7 +65,7 @@ export default function ProductDetail() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
-      {/* Breadcrumb */}
+      {}
       <nav className="mb-6 text-xs flex items-center gap-1.5" style={{ color:"var(--tx2)" }}>
         <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
         <span style={{ color:"var(--tx3)" }}>›</span>
@@ -76,7 +76,7 @@ export default function ProductDetail() {
 
       <div className="grid gap-8 md:grid-cols-2">
 
-        {/* ── Imagen ─────────────────────────────────────── */}
+        {}
         <div className="card overflow-hidden" style={{ padding:0 }}>
           <div className="relative" style={{ paddingBottom:"100%", background:"var(--bg3)" }}>
             <img
@@ -84,14 +84,14 @@ export default function ProductDetail() {
               alt={product.name}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            {/* Badge condición */}
+            {}
             <div className="absolute top-3 left-3">
               <span className={`badge ${condMap[product.condition] || "b-gray"}`}>
                 {product.condition}
               </span>
             </div>
 
-            {/* Botón favorito grande */}
+            {}
             {user && (
               <button
                 type="button"
@@ -111,7 +111,7 @@ export default function ProductDetail() {
               </button>
             )}
 
-            {/* Overlay agotado */}
+            {}
             {outOfStock && (
               <div className="absolute inset-0 flex items-center justify-center" style={{ background:"rgba(0,0,0,0.55)" }}>
                 <span className="text-white font-semibold px-4 py-2 rounded-full" style={{ background:"rgba(0,0,0,0.7)" }}>Agotado</span>
@@ -120,7 +120,7 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* ── Info ───────────────────────────────────────── */}
+        {}
         <div>
           <p className="text-xs font-semibold mb-1" style={{ color:"var(--red)" }}>{product.brand}</p>
           <h1 className="text-2xl font-bold mb-2" style={{ color:"var(--tx)" }}>{product.name}</h1>
@@ -130,7 +130,7 @@ export default function ProductDetail() {
             {product.description}
           </p>
 
-          {/* Atributos */}
+          {}
           <div className="grid grid-cols-2 gap-2 mb-5">
             {[
               ["Talla",     product.size],
@@ -145,14 +145,14 @@ export default function ProductDetail() {
             ))}
           </div>
 
-          {/* Aviso últimas unidades */}
+          {}
           {product.stock > 0 && product.stock <= 3 && (
             <p className="text-xs mb-3 font-medium" style={{ color:"#fbbf24" }}>
               ⚠️ Solo quedan {product.stock} unidades
             </p>
           )}
 
-          {/* ── Acciones ─────────────────────────────────── */}
+          {}
           <div className="flex flex-col gap-2">
             {outOfStock ? (
               <>

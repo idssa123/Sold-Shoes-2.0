@@ -54,27 +54,27 @@ export default function Cart() {
     <div style={{ background:"var(--bg)", minHeight:"100vh" }}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6">
 
-        {/* Título — caja negra como wireframe */}
+        {}
         <div className="inline-block mb-6 px-4 py-2 rounded" style={{ background:"var(--bg3)", border:"1px solid var(--bdr2)" }}>
           <h1 className="display text-2xl" style={{ color:"var(--tx)" }}>CARRITO DE COMPRAS</h1>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
 
-          {/* ── LISTA ARTÍCULOS ── */}
+          {}
           <div className="lg:col-span-2 space-y-3">
             {items.map(item => (
               <div key={item.id} className="rounded overflow-hidden" style={{ border:"1px solid var(--bdr2)", background:"var(--bg2)" }}>
                 <div className="flex gap-3 p-3">
-                  {/* IMG placeholder como wireframe */}
+                  {}
                   <div className="flex-shrink-0 rounded flex items-center justify-center text-xs font-bold"
                     style={{ width:100, height:90, background:"var(--bg3)", border:"1px solid var(--bdr)", color:"var(--tx3)" }}>
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded" />
                   </div>
 
-                  {/* Info */}
+                  {}
                   <div className="flex-1 min-w-0">
-                    {/* Nombre + talla + color */}
+                    {}
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="px-2 py-1 text-xs font-bold rounded"
                         style={{ background:"var(--bg3)", border:"1px solid var(--bdr2)", color:"var(--tx)" }}>
@@ -90,7 +90,7 @@ export default function Cart() {
                       </span>
                     </div>
 
-                    {/* Estado stock */}
+                    {}
                     <div className="mb-2">
                       <span className="px-2 py-0.5 text-xs rounded"
                         style={{ background:"rgba(34,197,94,.1)", color:"#4ade80", border:"1px solid rgba(34,197,94,.2)" }}>
@@ -98,9 +98,9 @@ export default function Cart() {
                       </span>
                     </div>
 
-                    {/* Stepper + precio + eliminar */}
+                    {}
                     <div className="flex items-center gap-2">
-                      {/* Stepper — igual al wireframe */}
+                      {}
                       <button type="button"
                         onClick={() => item.quantity>1 ? updateQuantity(item.id,item.quantity-1) : removeItem(item.id)}
                         className="h-7 w-7 flex items-center justify-center font-bold rounded text-sm"
@@ -114,13 +114,13 @@ export default function Cart() {
                         className="h-7 w-7 flex items-center justify-center font-bold rounded text-sm"
                         style={{ border:"1px solid var(--bdr2)", background:"var(--bg3)", color:"var(--tx)" }}>+</button>
 
-                      {/* Precio total item */}
+                      {}
                       <div className="px-3 py-1.5 rounded text-sm font-bold ml-1"
                         style={{ border:"1px solid var(--bdr2)", background:"var(--bg3)", color:"var(--tx)" }}>
                         {fmt(item.price * item.quantity)}
                       </div>
 
-                      {/* Botón X eliminar */}
+                      {}
                       <button type="button" onClick={() => removeItem(item.id)}
                         className="h-7 w-7 flex items-center justify-center rounded font-bold text-sm"
                         style={{ border:"1px solid var(--bdr2)", background:"var(--bg3)", color:"var(--tx2)" }}>✕</button>
@@ -134,23 +134,23 @@ export default function Cart() {
               className="btn btn-o text-xs px-4 py-2 mt-1">← Continuar comprando</button>
           </div>
 
-          {/* ── RESUMEN DEL PEDIDO — exacto al wireframe ── */}
+          {}
           <div className="lg:col-span-1">
             <div style={{ border:"1px solid var(--bdr2)", background:"var(--bg2)", borderRadius:6 }}>
 
-              {/* Header negro */}
+              {}
               <div className="px-4 py-3 rounded-t" style={{ background:"#000" }}>
                 <h2 className="display text-base" style={{ color:"var(--tx)" }}>RESUMEN DEL PEDIDO</h2>
               </div>
 
               <div className="p-4 space-y-3">
-                {/* Subtotal */}
+                {}
                 <div className="flex justify-between items-center">
                   <span className="text-sm px-2 py-1 rounded" style={{ border:"1px solid var(--bdr)", color:"var(--tx2)" }}>Subtotal:</span>
                   <span className="text-sm font-bold px-3 py-1 rounded" style={{ border:"1px solid var(--bdr2)", color:"var(--tx)", background:"var(--bg3)" }}>{fmt(total)}</span>
                 </div>
 
-                {/* Envío */}
+                {}
                 <div className="flex justify-between items-center">
                   <span className="text-sm px-2 py-1 rounded" style={{ border:"1px solid var(--bdr)", color:"var(--tx2)" }}>Envío:</span>
                   <span className="text-sm font-bold px-3 py-1 rounded" style={{ border:"1px solid var(--bdr2)", color:"var(--tx)", background:"var(--bg3)" }}>
@@ -158,7 +158,7 @@ export default function Cart() {
                   </span>
                 </div>
 
-                {/* IVA */}
+                {}
                 <div className="flex justify-between items-center">
                   <span className="text-sm px-2 py-1 rounded" style={{ border:"1px solid var(--bdr)", color:"var(--tx2)" }}>IVA (21%):</span>
                   <span className="text-sm font-bold px-3 py-1 rounded" style={{ border:"1px solid var(--bdr2)", color:"var(--tx)", background:"var(--bg3)" }}>{fmt(iva)}</span>
@@ -166,13 +166,13 @@ export default function Cart() {
 
                 <hr className="dvd" />
 
-                {/* TOTAL */}
+                {}
                 <div className="flex justify-between items-center">
                   <span className="font-bold text-sm px-2 py-1 rounded" style={{ border:"1px solid var(--bdr2)", color:"var(--tx)", background:"var(--bg3)" }}>TOTAL:</span>
                   <span className="font-bold text-base px-3 py-1 rounded" style={{ background:"var(--red)", color:"#fff" }}>{fmt(grandTotal)}</span>
                 </div>
 
-                {/* Código descuento */}
+                {}
                 <div>
                   <p className="text-xs mb-1.5" style={{ color:"var(--tx2)" }}>Código de descuento:</p>
                   <div className="flex gap-2">
@@ -184,7 +184,7 @@ export default function Cart() {
                   {couponMsg && <p className="text-xs mt-1" style={{ color: couponMsg.includes("✓") ? "#4ade80" : "var(--red)" }}>{couponMsg}</p>}
                 </div>
 
-                {/* Botón proceder */}
+                {}
                 <button type="button" onClick={() => navigate("/checkout")}
                   className="btn w-full py-3 display text-base"
                   style={{ background:"#000", color:"#fff", border:"1px solid var(--bdr2)", borderRadius:4, letterSpacing:"0.05em" }}>
@@ -192,7 +192,7 @@ export default function Cart() {
                 </button>
               </div>
 
-              {/* Métodos de pago */}
+              {}
               <div style={{ borderTop:"1px solid var(--bdr)", padding:"12px 16px" }}>
                 <p className="text-xs mb-2" style={{ color:"var(--tx2)" }}>MÉTODOS DE PAGO:</p>
                 <div className="flex gap-2 flex-wrap">

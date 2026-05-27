@@ -40,9 +40,9 @@ export default function Home() {
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
 
-      {/* ── BANNER PRINCIPAL ───────────────────────────────────── */}
+      {}
       <section style={{ background: "var(--bg2)", border: "1px solid var(--bdr)", margin: "16px", borderRadius: 6, overflow: "hidden", position: "relative", minHeight: 260 }}>
-        {/* Imagen de fondo placeholder */}
+        {}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)" }} />
         <div style={{ position: "absolute", top: 12, right: 12 }}>
           <span className="text-xs px-2 py-1 rounded" style={{ border: "1px solid var(--bdr2)", color: "var(--tx3)", background: "rgba(0,0,0,0.5)" }}>
@@ -50,10 +50,10 @@ export default function Home() {
           </span>
         </div>
 
-        {/* Contenido banner */}
+        {}
         <div className="relative flex items-center h-full" style={{ padding: "48px 32px", minHeight: 260 }}>
           <div className="flex items-center gap-4 flex-wrap">
-            {/* Título en caja negra — igual al wireframe */}
+            {}
             <div className="px-5 py-3 rounded" style={{ background: "#000", border: "1px solid var(--bdr2)" }}>
               <h1 className="display text-3xl sm:text-4xl" style={{ color: "var(--tx)" }}>BANNER PRINCIPAL</h1>
             </div>
@@ -77,9 +77,9 @@ export default function Home() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
 
-        {/* ── PRODUCTOS DESTACADOS ───────────────────────────────── */}
+        {}
         <div className="flex items-center justify-between mb-4">
-          {/* Título en caja negra */}
+          {}
           <div className="px-4 py-2 rounded" style={{ background: "#000", border: "1px solid var(--bdr2)" }}>
             <h2 className="display text-lg" style={{ color: "var(--tx)" }}>PRODUCTOS DESTACADOS</h2>
           </div>
@@ -114,7 +114,7 @@ export default function Home() {
               {visible.map(p => <ProductCard key={p.id} product={p} />)}
             </div>
 
-            {/* Paginación de puntos — igual al wireframe */}
+            {}
             {totalDots > 1 && (
               <div className="flex justify-center gap-2 mt-5">
                 {[...Array(totalDots)].map((_, i) => (
@@ -127,7 +127,7 @@ export default function Home() {
           </>
         )}
 
-        {/* ── FOOTER 3 COLUMNAS — exacto al wireframe ───────────── */}
+        {}
         <footer className="mt-12 rounded-lg overflow-hidden" style={{ border: "1px solid var(--bdr2)", background: "var(--bg2)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3">
             {[
@@ -145,11 +145,11 @@ export default function Home() {
               },
             ].map((col, ci) => (
               <div key={col.title} style={{ borderRight: ci < 2 ? "1px solid var(--bdr)" : "none" }}>
-                {/* Header columna — negro sólido como wireframe */}
+                {}
                 <div className="px-4 py-3" style={{ background: "#000" }}>
                   <h4 className="display text-sm" style={{ color: "var(--tx)" }}>{col.title}</h4>
                 </div>
-                {/* Links con borde */}
+                {}
                 <div className="p-3 space-y-2">
                   {col.links.map(link => (
                     <div key={link} className="px-3 py-1.5 rounded"

@@ -30,7 +30,7 @@ export default function Login() {
       <div className="w-full max-w-sm">
         <div className="rounded overflow-hidden" style={{ border:"1px solid var(--bdr2)", background:"var(--bg2)" }}>
 
-          {/* Título negro — exacto al wireframe */}
+          {}
           <div className="px-6 py-4 text-center" style={{ background:"#000" }}>
             <h1 className="display text-2xl" style={{ color:"var(--tx)" }}>INICIAR SESIÓN</h1>
           </div>
@@ -43,7 +43,7 @@ export default function Login() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email — con label en caja gris como wireframe */}
+              {}
               <div>
                 <div className="px-3 py-1.5 rounded-t text-xs" style={{ background:"var(--bg4)", border:"1px solid var(--bdr2)", borderBottom:"none", color:"var(--tx2)" }}>
                   Correo electrónico:
@@ -52,7 +52,7 @@ export default function Login() {
                   placeholder="" value={email} onChange={e=>setEmail(e.target.value)} required autoComplete="email" />
               </div>
 
-              {/* Contraseña */}
+              {}
               <div>
                 <div className="px-3 py-1.5 rounded-t text-xs" style={{ background:"var(--bg4)", border:"1px solid var(--bdr2)", borderBottom:"none", color:"var(--tx2)" }}>
                   Contraseña:
@@ -61,7 +61,7 @@ export default function Login() {
                   placeholder="" value={password} onChange={e=>setPassword(e.target.value)} required autoComplete="current-password" />
               </div>
 
-              {/* ¿Olvidaste contraseña? */}
+              {}
               <div className="text-right">
                 <button type="button" className="text-xs px-2 py-1 rounded"
                   style={{ border:"1px solid var(--bdr)", color:"var(--tx2)", background:"transparent" }}>
@@ -69,7 +69,7 @@ export default function Login() {
                 </button>
               </div>
 
-              {/* Botón iniciar sesión — negro como wireframe */}
+              {}
               <button type="submit" disabled={loading}
                 className="btn w-full py-3 display text-base"
                 style={{ background:"#000", color:"#fff", border:"1px solid var(--bdr2)", borderRadius:4, letterSpacing:"0.05em" }}>
@@ -77,14 +77,14 @@ export default function Login() {
               </button>
             </form>
 
-            {/* Separador */}
+            {}
             <div className="relative">
               <hr className="dvd" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-6 w-6 rounded-full flex items-center justify-center text-xs"
                 style={{ background:"var(--bg2)", border:"1px solid var(--bdr2)", color:"var(--tx3)" }}>o</div>
             </div>
 
-            {/* Botón Facebook */}
+            {}
             <button type="button" className="btn w-full py-2.5 text-sm font-semibold"
               style={{ background:"var(--bg3)", color:"var(--tx)", border:"1px solid var(--bdr2)", borderRadius:4 }}>
               <div className="h-5 w-5 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
@@ -92,7 +92,7 @@ export default function Login() {
               Continuar con Facebook
             </button>
 
-            {/* Botón Google — funcional */}
+            {}
             <button type="button" onClick={handleGoogle} disabled={gLoading}
               className="btn w-full py-2.5 text-sm font-semibold"
               style={{ background:"var(--bg3)", color:"var(--tx)", border:"1px solid var(--bdr2)", borderRadius:4, opacity: gLoading ? 0.6 : 1 }}>
@@ -111,7 +111,7 @@ export default function Login() {
               )}
             </button>
 
-            {/* ¿No tienes cuenta? */}
+            {}
             <div className="flex items-center justify-between pt-1">
               <span className="text-xs px-2 py-1 rounded" style={{ border:"1px solid var(--bdr)", color:"var(--tx2)" }}>¿No tienes cuenta?</span>
               <Link to="/register" className="text-xs px-3 py-1.5 rounded font-bold"

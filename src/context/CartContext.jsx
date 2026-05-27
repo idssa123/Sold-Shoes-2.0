@@ -21,7 +21,7 @@ export function CartProvider({ children }) {
       const maxStock = product.stock ?? 99;
 
       if (existing) {
-        if (existing.quantity >= maxStock) return prev;
+        if (existing.quantity >= maxStock) return prev; 
         return prev.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );

@@ -6,7 +6,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
-// ─── Obtener todos los productos ─────────────────────────────────────────────
+
 export async function fetchAllProducts() {
   const snapshot = await getDocs(
     query(collection(db, "products"), orderBy("createdAt", "desc"))
@@ -14,7 +14,7 @@ export async function fetchAllProducts() {
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
-// ─── Productos destacados ────────────────────────────────────────────────────
+
 export async function fetchFeaturedProducts() {
   const snapshot = await getDocs(
     query(collection(db, "products"), where("featured", "==", true))
@@ -22,15 +22,15 @@ export async function fetchFeaturedProducts() {
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
-// ─── Producto por ID ─────────────────────────────────────────────────────────
+
 export async function fetchProductById(productId) {
   const snapshot = await getDoc(doc(db, "products", productId));
   if (!snapshot.exists()) return null;
   return { id: snapshot.id, ...snapshot.data() };
 }
 
-// ─── Decrementar stock al confirmar pedido ────────────────────────────────────
-// items: [{ id, quantity }]
+
+
 export async function decrementStock(items) {
   const batch = writeBatch(db);
 
@@ -47,8 +47,8 @@ export async function decrementStock(items) {
   await batch.commit();
 }
 
-// ─── Paginación server-side (cursor-based) ────────────────────────────────────
-// Devuelve { items, lastDoc } donde lastDoc se pasa como cursor en la siguiente llamada
+
+
 export async function fetchProductsPaginated({ pageSize = 9, lastDoc = null, category = null } = {}) {
   const constraints = [orderBy("createdAt", "desc"), limit(pageSize)];
   if (category)  constraints.unshift(where("category", "==", category));
