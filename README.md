@@ -1,17 +1,17 @@
-# 👟 SoldShoes — Tienda de ropa y calzado de segunda mano
+#  SoldShoes — Tienda de ropa y calzado de segunda mano
 
 App React + Firebase para comprar y vender moda de segunda mano.
 
 ---
 
-## 📋 Requisitos previos
+##  Requisitos previos
 
 - Node.js ≥ 18
 - Proyecto Firebase con **Authentication**, **Firestore** y **Storage** habilitados
 
 ---
 
-## ⚙️ Instalación
+##  Instalación
 
 ```bash
 git clone <repo>
@@ -24,7 +24,7 @@ npm run dev
 
 ---
 
-## 🔑 Variables de entorno (`.env`)
+##  Variables de entorno (`.env`)
 
 ```
 VITE_FIREBASE_API_KEY=...
@@ -37,7 +37,7 @@ VITE_FIREBASE_APP_ID=...
 
 ---
 
-## 🗄️ Estructura de la base de datos (Firestore)
+## Estructura de la base de datos (Firestore)
 
 ### Colección `users`
 ```
@@ -116,7 +116,7 @@ await seedAdminUser("UID_DEL_USUARIO");
 
 ---
 
-## 🔐 Reglas de Firestore recomendadas
+##  Reglas de Firestore recomendadas
 
 ```
 rules_version = '2';
@@ -157,7 +157,7 @@ service cloud.firestore {
 
 ---
 
-## 🛠️ Panel de Administración
+##  Panel de Administración
 
 Accede en `/admin` (solo usuarios con `role: "admin"`).
 
@@ -172,7 +172,7 @@ Accede en `/admin` (solo usuarios con `role: "admin"`).
 
 ---
 
-## ✨ Funcionalidades principales
+##  Funcionalidades principales
 
 | Feature | Estado |
 |---------|--------|
@@ -194,7 +194,7 @@ Accede en `/admin` (solo usuarios con `role: "admin"`).
 
 ---
 
-## 🚀 Build para producción
+##  Build para producción
 
 ```bash
 npm run build
