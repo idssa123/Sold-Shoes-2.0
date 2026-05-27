@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "import:products": "node ./scripts/importProducts.mjs",
+    "import:products:admin": "node ./scripts/importProductsAdmin.mjs ./serviceAccountKey.json"
   },
   "dependencies": {
     "firebase": "^10.12.2",
+    "firebase-admin": "^13.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3"
