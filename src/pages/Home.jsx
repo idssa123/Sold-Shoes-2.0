@@ -4,14 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { db } from "../lib/firebase";
 import { seedProducts } from "../lib/seedProducts";
 import ProductCard from "../components/ProductCard";
+import Carousel from "../components/Carousel";
+import { products as localProducts } from "../data/products";
+import { REMOVED_IDS, REMOVED_NAMES } from "../lib/removedProducts";
 
 const PAGE = 4;
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [loading,  setLoading]  = useState(true);
-  const [seeding,  setSeeding]  = useState(false);
-  const [dot,      setDot]      = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
+  const [dot, setDot] = useState(0);
   const navigate = useNavigate();
 
   const fetchProducts = async () => {
@@ -20,7 +23,7 @@ export default function Home() {
       const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
       const snap = await getDocs(q);
       setProducts(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-    } catch {}
+    } catch { }
     finally { setLoading(false); }
   };
 
@@ -35,35 +38,26 @@ export default function Home() {
   };
 
   const totalDots = Math.max(1, Math.ceil(products.length / PAGE));
-  const visible   = products.slice(dot * PAGE, dot * PAGE + PAGE);
+  const visible = products.slice(dot * PAGE, dot * PAGE + PAGE);
+
+  // Featured products come from the curated local list so removed items don't appear.
+  const featuredList = localProducts.filter(p => p.featured && !REMOVED_IDS.includes(p.id) && !REMOVED_NAMES.includes(p.name)).slice(0, 8);
 
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
 
-      {}
       <section style={{ background: "var(--bg2)", border: "1px solid var(--bdr)", margin: "16px", borderRadius: 6, overflow: "hidden", position: "relative", minHeight: 260 }}>
-        {}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)" }} />
-        <div style={{ position: "absolute", top: 12, right: 12 }}>
-          <span className="text-xs px-2 py-1 rounded" style={{ border: "1px solid var(--bdr2)", color: "var(--tx3)", background: "rgba(0,0,0,0.5)" }}>
-            Imagen de fondo
-          </span>
-        </div>
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(26,26,26,0.55) 0%, rgba(13,13,13,0.55) 100%), url('/img/sold shoes.PNG') center/cover no-repeat" }} />
 
-        {}
         <div className="relative flex items-center h-full" style={{ padding: "48px 32px", minHeight: 260 }}>
           <div className="flex items-center gap-4 flex-wrap">
-            {}
             <div className="px-5 py-3 rounded" style={{ background: "#000", border: "1px solid var(--bdr2)" }}>
-              <h1 className="display text-3xl sm:text-4xl" style={{ color: "var(--tx)" }}>BANNER PRINCIPAL</h1>
+              <h1 className="display text-3xl sm:text-4xl" style={{ color: "var(--tx)", letterSpacing: "0.03em" }}>Vístete con Historia</h1>
+              <p className="text-sm mt-1" style={{ color: "var(--tx2)", marginTop: 6 }}>Piezas únicas, estilo sostenible — encuentra tu próxima prenda con carácter.</p>
             </div>
 
             <div className="px-4 py-2 rounded" style={{ border: "1px solid var(--bdr2)", background: "transparent" }}>
-              <span className="text-sm" style={{ color: "var(--tx2)" }}>Texto descriptivo de la marca</span>
-            </div>
-
-            <div className="px-4 py-2 rounded" style={{ border: "1px solid var(--bdr2)", background: "transparent" }}>
-              <span className="text-sm" style={{ color: "var(--tx2)" }}>Eslogan o llamada a la acción</span>
+              <span className="text-sm" style={{ color: "var(--tx2)" }}>Second Hand. First Style</span>
             </div>
 
             <Link to="/products"
@@ -77,9 +71,7 @@ export default function Home() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
 
-        {}
         <div className="flex items-center justify-between mb-4">
-          {}
           <div className="px-4 py-2 rounded" style={{ background: "#000", border: "1px solid var(--bdr2)" }}>
             <h2 className="display text-lg" style={{ color: "var(--tx)" }}>PRODUCTOS DESTACADOS</h2>
           </div>
@@ -99,35 +91,18 @@ export default function Home() {
               </div>
             ))}
           </div>
-        ) : products.length === 0 ? (
+        ) : featuredList.length === 0 ? (
           <div className="card p-12 text-center" style={{ borderRadius: 6 }}>
             <div className="text-5xl mb-4">👗</div>
-            <p className="font-semibold mb-2" style={{ color: "var(--tx)" }}>No hay productos todavía</p>
-            <p className="text-sm mb-5" style={{ color: "var(--tx2)" }}>Carga los productos de ejemplo para empezar</p>
-            <button onClick={handleSeed} disabled={seeding} className="btn btn-p mx-auto">
-              {seeding ? "Cargando..." : "Cargar productos demo"}
-            </button>
+            <p className="font-semibold mb-2" style={{ color: "var(--tx)" }}>No hay productos destacados</p>
+            <p className="text-sm mb-5" style={{ color: "var(--tx2)" }}>Marca algunos productos como `featured` en `src/data/products.js`.</p>
           </div>
         ) : (
-          <>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {visible.map(p => <ProductCard key={p.id} product={p} />)}
-            </div>
-
-            {}
-            {totalDots > 1 && (
-              <div className="flex justify-center gap-2 mt-5">
-                {[...Array(totalDots)].map((_, i) => (
-                  <button key={i} onClick={() => setDot(i)}
-                    className="rounded-full transition-all"
-                    style={{ width: dot === i ? 22 : 9, height: 9, background: dot === i ? "var(--tx)" : "var(--bg4)", border: "1px solid var(--bdr2)" }} />
-                ))}
-              </div>
-            )}
-          </>
+          <div>
+            <Carousel items={featuredList} />
+          </div>
         )}
 
-        {}
         <footer className="mt-12 rounded-lg overflow-hidden" style={{ border: "1px solid var(--bdr2)", background: "var(--bg2)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3">
             {[
@@ -145,17 +120,15 @@ export default function Home() {
               },
             ].map((col, ci) => (
               <div key={col.title} style={{ borderRight: ci < 2 ? "1px solid var(--bdr)" : "none" }}>
-                {}
                 <div className="px-4 py-3" style={{ background: "#000" }}>
                   <h4 className="display text-sm" style={{ color: "var(--tx)" }}>{col.title}</h4>
                 </div>
-                {}
                 <div className="p-3 space-y-2">
                   {col.links.map(link => (
-                    <div key={link} className="px-3 py-1.5 rounded"
-                      style={{ border: "1px solid var(--bdr)", background: "transparent", cursor: "pointer" }}>
+                    <a key={link} href="#" aria-label={link} className="px-3 py-1.5 rounded inline-block"
+                      style={{ border: "1px solid var(--bdr)", background: "transparent", cursor: "pointer", textDecoration: "none" }}>
                       <span className="text-xs" style={{ color: "var(--tx2)" }}>{link}</span>
-                    </div>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -164,7 +137,7 @@ export default function Home() {
         </footer>
 
         <p className="text-center text-xs mt-4 pb-4" style={{ color: "var(--tx3)" }}>
-          © 2025 Sold Shoes 2.0 · Proyecto Fin de Ciclo DAW
+          © 2026 Sold Shoes 2.0
         </p>
       </div>
     </div>

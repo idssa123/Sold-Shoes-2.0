@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Carousel({ items = [] }) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -16,7 +17,7 @@ export default function Carousel({ items = [] }) {
     return (
         <div className="border border-red-600 bg-black p-4 rounded">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-red-600">Productos destacados</h3>
+                <h3 className="text-lg font-bold" style={{ color: 'var(--red)' }}>Productos destacados</h3>
                 <div className="flex gap-2">
                     <button
                         type="button"
@@ -39,15 +40,13 @@ export default function Carousel({ items = [] }) {
                 {items.map((item, index) => {
                     const isActive = index === activeIndex;
                     return (
-                        <div
-                            key={item.id}
-                            className={`min-w-[200px] border border-red-600 bg-black p-3 rounded ${isActive ? "" : "opacity-50"}`}
-                        >
+                        <Link key={item.id} to={`/products/${item.id}`} className={`min-w-[200px] border border-red-600 bg-black p-3 rounded ${isActive ? "" : "opacity-50"}`}>
                             <div className="relative w-full" style={{ paddingBottom: '100%' }}>
                                 <img
                                     src={item.image}
                                     alt={item.name}
                                     className="absolute inset-0 w-full h-full rounded object-cover"
+                                    onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.svg'; }}
                                 />
                             </div>
                             <div className="mt-2">
@@ -55,7 +54,7 @@ export default function Carousel({ items = [] }) {
                                 <h4 className="text-sm font-semibold text-white">{item.name}</h4>
                                 <p className="text-sm text-red-500 font-bold">{item.price}€</p>
                             </div>
-                        </div>
+                        </Link>
                     );
                 })}
             </div>

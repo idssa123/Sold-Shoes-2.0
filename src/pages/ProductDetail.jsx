@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import { REMOVED_IDS } from "../lib/removedProducts";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
@@ -30,6 +31,7 @@ export default function ProductDetail() {
     (async () => {
       setLoading(true);
       try {
+        if (REMOVED_IDS.includes(id)) { setError("Producto no encontrado."); return; }
         const snap = await getDoc(doc(db, "products", id));
         if (!snap.exists()) { setError("Producto no encontrado."); return; }
         setProduct({ id: snap.id, ...snap.data() });

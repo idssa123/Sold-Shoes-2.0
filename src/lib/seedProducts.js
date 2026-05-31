@@ -3,15 +3,16 @@
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase";
 import { products } from "../data/products";
+import { REMOVED_IDS, REMOVED_NAMES } from "./removedProducts";
 
 
 export async function seedProducts() {
-  console.log(`[seed] Escribiendo ${products.length} productos en Firestore…`);
+  const toWrite = products.filter(p => !REMOVED_IDS.includes(p.id) && !REMOVED_NAMES.includes(p.name));
+  console.log(`[seed] Escribiendo ${toWrite.length} productos en Firestore…`);
 
-  const writes = products.map((product) =>
+  const writes = toWrite.map((product) =>
     setDoc(doc(db, "products", product.id), {
       ...product,
-      
       stock:     product.stock ?? 5,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),

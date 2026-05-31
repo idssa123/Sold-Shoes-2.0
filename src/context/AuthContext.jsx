@@ -22,6 +22,11 @@ export function AuthProvider({ children }) {
 
   
   useEffect(() => {
+    if (!auth) {
+      // Firebase not configured (missing env vars) — skip auth watcher to avoid runtime errors.
+      setLoading(false);
+      return;
+    }
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser);
@@ -41,11 +46,12 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
+    (!auth ? Promise.reject(new Error('Firebase no configurado')) : signInWithEmailAndPassword(auth, email, password));
 
   const logout = () => { signOut(auth); setRole(null); };
 
   const register = async ({ email, password, profile }) => {
+    if (!auth) throw new Error('Firebase no configurado');
     const credential = await createUserWithEmailAndPassword(auth, email, password);
     await setDoc(doc(db, "users", credential.user.uid), {
       ...profile,
@@ -59,6 +65,7 @@ export function AuthProvider({ children }) {
   };
 
   const loginWithGoogle = async () => {
+    if (!auth) throw new Error('Firebase no configurado');
     const result  = await signInWithPopup(auth, googleProvider);
     const gUser   = result.user;
     const userRef = doc(db, "users", gUser.uid);

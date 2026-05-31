@@ -4,7 +4,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useFavorites } from "../context/FavoritesContext";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, noImage = false }) {
   const { user }                        = useAuth();
   const { addItem, items }              = useCart();
   const { isFavorite, toggleFavorite,
@@ -36,10 +36,22 @@ export default function ProductCard({ product }) {
       <Link to={`/products/${product.id}`} className="block">
 
         {}
-        <div className="relative overflow-hidden" style={{ paddingBottom: "80%", background: "var(--bg3)" }}>
-          <img src={product.image} alt={product.name}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy" />
+        <div className="relative overflow-hidden" style={{ paddingBottom: noImage ? "24%" : "80%", background: "var(--bg3)" }}>
+          {!noImage ? (
+            <img src={product.image} alt={product.name}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.svg'; }} />
+          ) : (
+            <div className="flex items-center gap-3 px-3 py-2">
+              <img src={product.image} alt={product.name} className="h-12 w-12 rounded object-cover flex-shrink-0"
+                onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.svg'; }} />
+              <div className="min-w-0">
+                <p className="text-sm font-bold truncate" style={{ color: "var(--tx)" }}>{product.name}</p>
+                <p className="text-xs truncate" style={{ color: "var(--tx2)" }}>{product.brand} · Talla {product.size}</p>
+              </div>
+            </div>
+          )}
 
           {}
           {user && (

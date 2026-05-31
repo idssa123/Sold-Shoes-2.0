@@ -35,6 +35,15 @@ export default function Contact() {
       setError("Completa nombre, email y mensaje."); return;
     }
     setError("");
+    // If there's no backend configured, open the user's email client with mailto as a fallback.
+    try {
+      const to = 'hola@soldshoes.com';
+      const mailSubject = `${subject} - ${form.name}`;
+      const body = `Nombre: ${form.name} ${form.surname}%0D%0AEmail: ${form.email}%0D%0A%0D%0A${encodeURIComponent(form.msg)}`;
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(mailSubject)}&body=${body}`;
+    } catch (err) {
+      // ignore
+    }
     setSent(true);
   };
 
@@ -80,7 +89,11 @@ export default function Contact() {
                 {c.title.toUpperCase()}
               </p>
               {c.lines.map((l) => (
-                <p key={l} className="text-xs" style={{ color: "var(--tx2)" }}>{l}</p>
+                <p key={l} className="text-xs" style={{ color: "var(--tx2)" }}>
+                  {c.title === 'Email' ? (
+                    <a href={`mailto:${l}`} style={{ color: 'inherit', textDecoration: 'underline' }}>{l}</a>
+                  ) : l}
+                </p>
               ))}
             </div>
           ))}

@@ -14,14 +14,14 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault(); setError(""); setLoading(true);
     try { await login(email, password); navigate("/"); }
-    catch { setError("Email o contraseña incorrectos."); }
+    catch (err) { setError(err?.message || "Email o contraseña incorrectos."); }
     finally { setLoading(false); }
   };
 
   const handleGoogle = async () => {
     setError(""); setGLoading(true);
     try { await loginWithGoogle(); navigate("/"); }
-    catch (err) { if (err.code !== "auth/popup-closed-by-user") setError("Error con Google. Inténtalo de nuevo."); }
+    catch (err) { if (err?.code !== "auth/popup-closed-by-user") setError(err?.message || "Error con Google. Inténtalo de nuevo."); }
     finally { setGLoading(false); }
   };
 

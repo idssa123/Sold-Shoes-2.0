@@ -10,6 +10,7 @@ import Favorites   from "./pages/Favorites";
 import Login       from "./pages/Login";
 import Register    from "./pages/Register";
 import Admin       from "./pages/Admin";
+import Contact     from "./pages/Contact";
 import { useAuth } from "./context/AuthContext";
 
 
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/products"      element={<Products />} />
           <Route path="/products/:id"  element={<ProductDetail />} />
           <Route path="/cart"          element={<Cart />} />
+          <Route path="/contact"       element={<Contact />} />
           <Route path="/login"         element={<Login />} />
           <Route path="/register"      element={<Register />} />
 

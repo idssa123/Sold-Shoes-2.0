@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { REMOVED_IDS, REMOVED_NAMES } from "../lib/removedProducts";
 
 const CartContext = createContext(null);
 const STORAGE_KEY = "solshoes-cart";
@@ -7,7 +8,8 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      const parsed = raw ? JSON.parse(raw) : [];
+      return parsed.filter(item => !REMOVED_IDS.includes(item.id) && !REMOVED_NAMES.includes(item.name));
     } catch { return []; }
   });
 
